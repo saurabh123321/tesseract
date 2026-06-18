@@ -1,0 +1,18 @@
+name: Sync Upstream Tags
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight
+  workflow_dispatch: # Allows you to trigger it manually via the UI button
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync Repo Actions
+        uses: repo-sync/github-sync@v2
+        with:
+          source_repo: "https://github.com/UB-Mannheim/tesseract"
+          target_repo: "https://github.com/saurabh123321/tesseract"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          sync_tags: true
