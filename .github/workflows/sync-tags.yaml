@@ -3,16 +3,24 @@ name: Sync Upstream Tags
 on:
   schedule:
     - cron: '0 0 * * *' # Runs daily at midnight
-  workflow_dispatch: # Allows you to trigger it manually via the UI button
+  workflow_dispatch: # Allows manual trigger button
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Crucial step to initialize the git directory in the workspace
+      - name: Checkout Target Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches all history so tags can sync correctly
+
+      # Step 2: Run the sync utility with corrected parameter names
       - name: Sync Repo Actions
         uses: repo-sync/github-sync@v2
         with:
-          source_repo: "https://github.com/UB-Mannheim/tesseract"
-          target_repo: "https://github.com/saurabh123321/tesseract"
+          source_repo: "https://github.com"
+          source_branch: "main"
+          destination_branch: "main"
           github_token: ${{ secrets.GITHUB_TOKEN }}
           sync_tags: true
